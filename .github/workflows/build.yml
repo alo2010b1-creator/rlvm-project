@@ -23,9 +23,16 @@ jobs:
 
       - name: Build native libraries
         working-directory: rlvm-r
+        env:
+          # CMake 4.x dropped compatibility with cmake_minimum_required < 3.5
+          CMAKE_POLICY_VERSION_MINIMUM: "3.5"
         run: |
           chmod +x scripts/build.sh
           ./scripts/build.sh --arch arm64
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 9.3.1
 
       - name: Generate Gradle wrapper jar
         working-directory: rlvm-r
